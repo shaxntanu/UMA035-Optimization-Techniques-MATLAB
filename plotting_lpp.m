@@ -50,3 +50,27 @@ for i =1:size(A,1)
     end
 end
 ptt = pt'
+
+%step 6: all corner points
+
+allpt = [ptt; corpt]
+points = unique (allpt, 'rows')
+
+for i = 1 : size (points,1)
+    const1 (i) = A (1,1)*points(i,1)+A(1,2)*points(i,2)-B(1);
+    const2 (i) = A (2,1)*points(i,1)+A(2,2)*points(i,2)-B(2);
+    const3 (i) = A (3,1)*points(i,1)+A(3,2)*points(i,2)-B(3);
+    S1 = find (const1>0);
+    S2 = find (const2>0);
+    S3 = find (const3>0);
+end
+
+%step 7: to find optimal value and optimal points
+S = unique ([S1, S2, S3]);
+points(S,:)=[];
+value = points * C'
+table = [points value]
+[obj, index] = max(value)
+x1_optimal = points (index,1)
+x2_optimal = points (index,2)
+fprintf('optimal value is %f at (%f, %f)', obj, x1_optimal, x2_optimal)
